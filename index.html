@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Exemplo Prático: addEventListener</title>
+  <style>
+    :root {
+      --bg:#f0f4f8;
+      --card:#ffffff;
+      --radius:12px;
+      --shadow:0 8px 24px rgba(0,0,0,0.07);
+      --primary:#2563eb;
+      --radius-sm:6px;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      color:#1f2d3d;
+    }
+    *{box-sizing:border-box;}
+    body {
+      margin:0;
+      padding:0;
+      background: var(--bg);
+      line-height:1.5;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:2rem;
+    }
+    .container {
+      max-width:900px;
+      width:100%;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding:2rem;
+      box-shadow: var(--shadow);
+      display:grid;
+      gap:1.75rem;
+      grid-template-columns:1fr;
+    }
+    header {
+      display:flex;
+      flex-direction:column;
+      gap:0.5rem;
+    }
+    h1 {
+      margin:0;
+      font-size:2rem;
+    }
+    p {
+      margin:0.25rem 0;
+    }
+    .demo {
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+    }
+    .box {
+      flex:1 1 250px;
+      padding:1rem;
+      border:1px solid #d4d9e2;
+      border-radius: var(--radius-sm);
+      background:#f9fbfd;
+    }
+    button {
+      padding:0.75rem 1.25rem;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:1rem;
+      background: var(--primary);
+      color:#fff;
+      transition: filter .2s;
+    }
+    button:hover {filter:brightness(1.1);}
+    .output {
+      margin-top:0.75rem;
+      padding:0.75rem;
+      background:#eef5ff;
+      border-radius:6px;
+      border:1px solid #c7dafd;
+      position:relative;
+    }
+    pre {
+      background:#1e293b;
+      color:#f1f5fe;
+      padding:1rem;
+      border-radius:6px;
+      overflow:auto;
+      font-size:0.85rem;
+    }
+    code {font-family: "Source Code Pro", monospace; }
+    .small {
+      font-size:0.85rem;
+      color:#555;
+    }
+    .links {
+      margin-top:1rem;
+      display:flex;
+      gap:1rem;
+      flex-wrap:wrap;
+    }
+    .link-card {
+      flex:1 1 280px;
+      background:#fff;
+      border:1px solid #d4d9e2;
+      padding:0.75rem 1rem;
+      border-radius:8px;
+    }
+    .badge {
+      display:inline-block;
+      background:#10b981;
+      color:#fff;
+      padding:2px 8px;
+      border-radius:999px;
+      font-size:0.65rem;
+      vertical-align:middle;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" aria-label="Página de demonstração do addEventListener">
+    <header>
+      <h1>Entendendo o <code>addEventListener</code> em JavaScript</h1>
+      <p>O método <strong>addEventListener</strong> permite escutar eventos em elementos HTML e reagir a eles com funções. Abaixo há um exemplo prático com botão e interação.</p>
+    </header>
+
+    <section class="demo" aria-label="Demonstração interativa">
+      <div class="box" aria-label="Destacar com cor">
+        <h2>Mudar cor do texto</h2>
+        <p id="texto" aria-live="polite">Esse texto vai mudar de cor ao clicar no botão.</p>
+        <button id="botaoCor">Mudar cor</button>
+        <div class="output" id="saidaCor" aria-label="Saída de cor">Cor atual: <span id="corAtual">preto</span></div>
+      </div>
+
+      <div class="box" aria-label="Esconder / mostrar texto">
+        <h2>Mostrar / ocultar</h2>
+        <p id="paragrafo">Este parágrafo pode ser ocultado ou mostrado.</p>
+        <button id="botaoToggle">Ocultar</button>
+        <div class="output" id="saidaToggle">Status: visível</div>
+      </div>
+
+      <div class="box" aria-label="Alerta na tela">
+        <h2>Exibir alerta</h2>
+        <p>Ao clicar no botão abaixo, um alerta será exibido.</p>
+        <button id="botaoAlerta">Mostrar alerta</button>
+      </div>
+    </section>
+
+    <section class="box" aria-label="Trecho do JavaScript">
+      <h2>O código usado</h2>
+      <p class="small">O JavaScript abaixo usa <code>addEventListener</code> em três elementos diferentes.</p>
+      <pre><code id="codigoJS">
+const btnCor = document.getElementById("botaoCor");
+const texto = document.getElementById("texto");
+const corAtualSpan = document.getElementById("corAtual");
+
+btnCor.addEventListener("click", () => {
+  const cores = ["#e11d48", "#0284c7", "#16a34a", "#d97706", "#6b21a8"];
+  const escolhida = cores[Math.floor(Math.random() * cores.length)];
+  texto.style.color = escolhida;
+  corAtualSpan.textContent = escolhida;
+});
+
+const btnToggle = document.getElementById("botaoToggle");
+const paragrafo = document.getElementById("paragrafo");
+const saidaToggle = document.getElementById("saidaToggle");
+let visivel = true;
+btnToggle.addEventListener("click", () => {
+  visivel = !visivel;
+  paragrafo.style.display = visivel ? "block" : "none";
+  btnToggle.textContent = visivel ? "Ocultar" : "Mostrar";
+  saidaToggle.textContent = "Status: " + (visivel ? "visível" : "oculto");
+});
+
+const btnAlerta = document.getElementById("botaoAlerta");
+btnAlerta.addEventListener("click", () => {
+  alert("Você clicou no botão de alerta! ✅");
+});
+      </code></pre>
+    </section>
+
+    <section class="links" aria-label="Links e entregáveis">
+      <div class="link-card">
+        <h3>Entrega</h3>
+        <ul>
+          <li>📦 <strong>Repositório GitHub</strong>: adicione o link após criar.</li>
+          <li>🌐 <strong>GitHub Pages</strong>: publique esse <code>index.html</code>.</li>
+          <li>📜 <strong>Certificado</strong>: coloque o link/scanner no README ou como anexo.</li>
+        </ul>
+      </div>
+      <div class="link-card">
+        <h3>Boas práticas</h3>
+        <ul>
+          <li>HTML semântico (uso de &lt;header&gt;, &lt;section&gt;).</li>
+          <li>Interações acessíveis (aria-label, live regions).</li>
+          <li>Código visível e comentado.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // mudar cor
+    const btnCor = document.getElementById("botaoCor");
+    const texto = document.getElementById("texto");
+    const corAtualSpan = document.getElementById("corAtual");
+
+    btnCor.addEventListener("click", () => {
+      const cores = ["#e11d48", "#0284c7", "#16a34a", "#d97706", "#6b21a8"];
+      const escolhida = cores[Math.floor(Math.random() * cores.length)];
+      texto.style.color = escolhida;
+      corAtualSpan.textContent = escolhida;
+    });
+
+    // mostrar/ocultar
+    const btnToggle = document.getElementById("botaoToggle");
+    const paragrafo = document.getElementById("paragrafo");
+    const saidaToggle = document.getElementById("saidaToggle");
+    let visivel = true;
+    btnToggle.addEventListener("click", () => {
+      visivel = !visivel;
+      paragrafo.style.display = visivel ? "block" : "none";
+      btnToggle.textContent = visivel ? "Ocultar" : "Mostrar";
+      saidaToggle.textContent = "Status: " + (visivel ? "visível" : "oculto");
+    });
+
+    // alerta
+    const btnAlerta = document.getElementById("botaoAlerta");
+    btnAlerta.addEventListener("click", () => {
+      alert("Você clicou no botão de alerta! ✅");
+    });
+  </script>
+</body>
+</html>
